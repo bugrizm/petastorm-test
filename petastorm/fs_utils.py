@@ -133,13 +133,14 @@ class FilesystemResolver(object):
             #    raise ValueError(
             #        'URLs must be of the form {}://bucket/path'.format(self._parsed_dataset_url.scheme)
             #    )
-            logger.info('fallback to: %s', protocol)
+            logger.info('fallback to fsspec for hadling scheme: %s', self._parsed_dataset_url.scheme)
             storage_options = storage_options or {}
             protocol = self._parsed_dataset_url.scheme
             cls = fsspec.get_filesystem_class(protocol)
             options = cls._get_kwargs_from_urls(self._dataset_url)
             update_storage_options(options, storage_options)
             self._filesystem = cls(**options)
+            logger.info('using fsspec file system: %s, with options %s', self._filesystem, options)
             self._filesystem_factory = lambda: cls(**options)  # pylint: disable=unnecessary-lambda
 
     def parsed_dataset_url(self):
