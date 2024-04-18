@@ -133,7 +133,7 @@ class FilesystemResolver(object):
             #    raise ValueError(
             #        'URLs must be of the form {}://bucket/path'.format(self._parsed_dataset_url.scheme)
             #    )
-
+            logger.info('fallback to: %s', protocol)
             storage_options = storage_options or {}
             protocol = self._parsed_dataset_url.scheme
             cls = fsspec.get_filesystem_class(protocol)
